@@ -44,8 +44,8 @@ const HomePage = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
-            { name: "Fresh Tomatoes", price: "₹40/kg", img: 'public/tomatoes.jpg' },
-            { name: "Organic Carrots", price: "₹35/kg", img: "public/carrot.jpg" },
+            { name: "Fresh Tomatoes", price: "₹40/kg", img: '/GreenMart2.0/tomatoes.jpg' },
+            { name: "Organic Carrots", price: "₹35/kg", img: "/GreenMart2.0/public/carrot.jpg" },
             { name: "Green Apples", price: "₹180/kg", img: "public/apple.jpg" },
             { name: "Milk (1L)", price: "₹55", img: "public/milk.jpg" }
           ].map((product, index) => (
