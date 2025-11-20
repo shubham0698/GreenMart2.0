@@ -3,15 +3,16 @@ import React, { useState } from "react";
 const Shop = () => {
   // Dummy product list (later replace with API data)
   const allProducts = [
-    { id: 1, name: "Tomatoes", price: 40, category: "Vegetables", img: "https://i.ibb.co/y8NhLtW/tomato.jpg" },
-    { id: 2, name: "Potatoes", price: 30, category: "Vegetables", img: "https://i.ibb.co/Pc7Kk1Q/potato.jpg" },
-    { id: 3, name: "Carrots", price: 35, category: "Vegetables", img: "https://i.ibb.co/LYVjJrH/carrots.jpg" },
-    { id: 4, name: "Green Apples", price: 180, category: "Fruits", img: "https://i.ibb.co/7VWxwgd/apple.jpg" },
-    { id: 5, name: "Bananas", price: 60, category: "Fruits", img: "https://i.ibb.co/5Yyt6zs/banana.jpg" },
-    { id: 6, name: "Milk (1L)", price: 55, category: "Dairy", img: "https://i.ibb.co/2ZMy0Fv/milk.jpg" },
-    { id: 7, name: "Paneer", price: 90, category: "Dairy", img: "https://i.ibb.co/5Mb6QX8/paneer.jpg" },
-    { id: 8, name: "Atta (5kg)", price: 220, category: "Groceries", img: "https://i.ibb.co/m8z6v7Z/atta.jpg" },
-  ];
+  { id: 1, name: "Tomatoes", price: 40, category: "Vegetables", img: "public/tomatoes.jpg" },
+  { id: 2, name: "Potatoes", price: 30, category: "Vegetables", img: "public/potato.jpg" },
+  { id: 3, name: "Carrots", price: 35, category: "Vegetables", img: "public/carrots.jpg" },
+  { id: 4, name: "Green Apples", price: 180, category: "Fruits", img: "public/apple.jpg" },
+  { id: 5, name: "Bananas", price: 60, category: "Fruits", img: "public/banana.jpg" },
+  { id: 6, name: "Milk (1L)", price: 55, category: "Dairy", img: "public/milk.jpg" },
+  { id: 7, name: "Paneer", price: 90, category: "Dairy", img: "public/paneer.jpg" },
+  { id: 8, name: "Atta (5kg)", price: 220, category: "Groceries", img: "public/atta.jpg" },
+];
+
 
   const [filteredCategory, setFilteredCategory] = useState("All");
   const [search, setSearch] = useState("");

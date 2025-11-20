@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { CartIcon, MenuIcon, CloseIcon } from "./script";
+import { useNavigate } from "react-router-dom";
 
 const Header = ({ cartItemCount, onCartClick }) => {
+  const isLogin = false;
   const [searchQuery, setSearchQuery] = useState("");
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const profileRef = useRef();
+  const navigate = useNavigate();
 
   // Close profile dropdown when clicking outside
   useEffect(() => {
@@ -89,8 +92,8 @@ const Header = ({ cartItemCount, onCartClick }) => {
           </div>
 
           {/* Cart Button */}
-          <button
-            onClick={onCartClick}
+          <Link
+            to="/cart"            
             className="relative text-gray-600 hover:text-green-700 transition-colors"
             aria-label="Open cart"
           >
@@ -100,12 +103,12 @@ const Header = ({ cartItemCount, onCartClick }) => {
                 {cartItemCount}
               </span>
             )}
-          </button>
+          </Link>
 
           {/* Profile Icon */}
           <div className="relative" ref={profileRef}>
             <button
-              onClick={() => setIsProfileOpen(!isProfileOpen)}
+              onClick={() => isLogin?setIsProfileOpen(!isProfileOpen):navigate("/login")}
               className="focus:outline-none"
             >
               <svg

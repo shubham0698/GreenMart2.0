@@ -1,6 +1,7 @@
 import React from "react";
 import { Star, Truck, ShieldCheck, Leaf } from "lucide-react";
 
+
 const HomePage = () => {
   return (
     <div className="bg-gray-50">
@@ -22,10 +23,10 @@ const HomePage = () => {
         <h2 className="text-3xl font-bold mb-8 text-center">Shop by Categories</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
-            { name: "Vegetables", img: "/src/assets/topimage.jpg" },
-            { name: "Fruits", img: "/src/assets/fruits.jpg" },
-            { name: "Dairy Products", img: "/src/assets/DairyProducts.jpg" },
-            { name: "Organic Groceries", img: "/src/assets/organic.jpg" }
+            { name: "Vegetables", img: "public/topimage.jpg" },
+            { name: "Fruits", img: "public/fruits.jpg" },
+            { name: "Dairy Products", img: "public/DairyProducts.jpg" },
+            { name: "Organic Groceries", img: "public/organic.jpg" }
           ].map((cat, index) => (
             <div key={index} className="bg-white shadow rounded-lg overflow-hidden hover:scale-105 transition">
               <img src={cat.img} alt={cat.name} className="w-full h-36 object-cover" />
@@ -41,10 +42,10 @@ const HomePage = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
-            { name: "Fresh Tomatoes", price: "₹40/kg", img: "/src/assets/tomatoes.jpg" },
-            { name: "Organic Carrots", price: "₹35/kg", img: "/src/assets/carrot.jpg" },
-            { name: "Green Apples", price: "₹180/kg", img: "/src/assets/apple.jpg" },
-            { name: "Milk (1L)", price: "₹55", img: "/src/assets/milk.jpg" }
+            { name: "Fresh Tomatoes", price: "₹40/kg", img: 'public/tomatoes.jpg' },
+            { name: "Organic Carrots", price: "₹35/kg", img: "public/carrot.jpg" },
+            { name: "Green Apples", price: "₹180/kg", img: "public/apple.jpg" },
+            { name: "Milk (1L)", price: "₹55", img: "public/milk.jpg" }
           ].map((product, index) => (
             <div key={index} className="bg-white rounded-lg shadow hover:shadow-lg transition p-4">
               <img src={product.img} alt={product.name} className="w-full h-40 object-cover rounded" />
