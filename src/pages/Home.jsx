@@ -1,8 +1,10 @@
 import React from "react";
 import { Star, Truck, ShieldCheck, Leaf } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 
 const HomePage = () => {
+  const navigate = useNavigate();
   return (
     <div className="bg-gray-50">
       {/* ---------------------- 1. HERO SECTION ---------------------- */}
@@ -13,7 +15,7 @@ const HomePage = () => {
         <p className="text-lg md:text-xl mb-6">
           100% fresh and organic vegetables, fruits & groceries.
         </p>
-        <button className="bg-white text-green-700 font-semibold py-3 px-8 rounded-lg shadow hover:bg-gray-200 transition">
+        <button onClick={()=>{navigate("/shop")}} className="bg-white text-green-700 font-semibold py-3 px-8 rounded-lg shadow hover:bg-gray-200 transition">
           Shop Now
         </button>
       </section>
