@@ -1,10 +1,34 @@
 import React from "react";
 import { Star, Truck, ShieldCheck, Leaf } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import getLogin from "../api/getlogin";
+//cart insertion 
+import { addOrUpdateCart } from "../api/cartApi";
+
+
 
 
 const HomePage = () => {
   const navigate = useNavigate();
+  // Example: called when user clicks "Add to Cart"
+  const user = getLogin();
+  const handleAddToCart = async (productId) => {
+    if(!user){
+      navigate("/login");
+      return;
+    }
+    const userId = user.uid; // replace with logged-in user ID
+    const quantity = 1; // default quantity to add
+
+    try {
+      const result = await addOrUpdateCart(userId, productId, quantity);
+      console.log("Cart updated:", result);
+      alert("Product added to cart!");
+    } catch (error) {
+      alert("Failed to add product to cart.");
+    }
+  };
+  //end 
   return (
     <div className="bg-gray-50">
       {/* ---------------------- 1. HERO SECTION ---------------------- */}
@@ -44,16 +68,18 @@ const HomePage = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
-            { name: "Fresh Tomatoes", price: "₹40/kg", img: '/GreenMart2.0/tomatoes.jpg' },
-            { name: "Organic Carrots", price: "₹35/kg", img: "/GreenMart2.0/public/carrot.jpg" },
-            { name: "Green Apples", price: "₹180/kg", img: "public/apple.jpg" },
-            { name: "Milk (1L)", price: "₹55", img: "public/milk.jpg" }
+            { name: "Fresh Tomatoes", price: "₹40/kg", img: '/GreenMart2.0/tomatoes.jpg',id:1 },
+            { name: "Organic Carrots", price: "₹35/kg", img: "/GreenMart2.0/public/carrot.jpg",id:2 },
+            { name: "Green Apples", price: "₹180/kg", img: "public/apple.jpg",id:3 },
+            { name: "Milk (1L)", price: "₹55", img: "public/milk.jpg",id:4}
           ].map((product, index) => (
             <div key={index} className="bg-white rounded-lg shadow hover:shadow-lg transition p-4">
               <img src={product.img} alt={product.name} className="w-full h-40 object-cover rounded" />
               <h3 className="mt-3 font-semibold">{product.name}</h3>
               <p className="text-green-600 font-bold">{product.price}</p>
-              <button className="w-full bg-green-500 text-white mt-3 py-2 rounded hover:bg-green-600 transition">
+              <button className="w-full bg-green-500 text-white mt-3 py-2 rounded hover:bg-green-600 transition" 
+                onClick={() =>handleAddToCart(product.id)}
+              >
                 Add to Cart
               </button>
             </div>

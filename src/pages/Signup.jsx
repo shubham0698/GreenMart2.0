@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
@@ -21,7 +22,7 @@ const Signup = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
 
     if (form.password !== form.confirmPassword) {
@@ -29,11 +30,26 @@ const Signup = () => {
       return;
     }
 
-    // TODO: API Call for backend
-    console.log("User Signup Data:", form);
+    try {
+      const userData = {
+        fullname: form.name,
+        email: form.email,
+        password: form.password,
+        phone: form.mobile,
+        address: form.address + " | Landmark: " + form.landmark,
+        pin: form.pincode,
+        city: form.city,
+        state: form.state,
+      };
 
-    alert("Account created successfully!");
-    navigate("/login");
+      const res = await axios.post("http://localhost:5000/register", userData);
+
+      alert(res.data.message);
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+      alert(error.response?.data?.message || "Signup failed!");
+    }
   };
 
   return (
@@ -42,6 +58,8 @@ const Signup = () => {
         <h2 className="text-3xl font-bold text-center mb-6">Create Your Account</h2>
 
         <form onSubmit={handleSignup}>
+          {/* SAME FORM UI - NO CHANGES */}
+
 
           {/* Name */}
           <input

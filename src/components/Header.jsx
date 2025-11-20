@@ -2,10 +2,25 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { CartIcon, MenuIcon, CloseIcon } from "./script";
 import { useNavigate } from "react-router-dom";
+import getLogin from "../api/getlogin";
+import Cookies from "js-cookie";
+
 
 const Header = ({ cartItemCount, onCartClick }) => {
+const [searchQuery, setSearchQuery] = useState("");
+  // function for search 
+  const goToSearch = () => {
+    if (searchQuery.trim() !== "") {
+      navigate(`/shop?search=${encodeURIComponent(searchQuery)}`);
+    } else {
+      navigate("/shop"); // if empty
+    }
+  };
+//
   const isLogin = false;
-  const [searchQuery, setSearchQuery] = useState("");
+  const user = getLogin();
+  console.log(user.username);
+  
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const profileRef = useRef();
@@ -34,15 +49,22 @@ const Header = ({ cartItemCount, onCartClick }) => {
         </Link>
 
         {/* Desktop Search */}
-        <div className="hidden md:flex items-center bg-gray-100 border border-green-200 rounded-full px-4 py-1.5 w-1/3 shadow-inner hover:shadow-md transition-all duration-200">
+        <div
+          className="hidden md:flex items-center bg-gray-100 border border-green-200 rounded-full px-4 py-1.5 w-1/3 shadow-inner hover:shadow-md transition-all duration-200"
+        >
           <input
             type="text"
             placeholder="Search for products..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") goToSearch();
+            }}
             className="flex-grow bg-transparent px-2 py-1 outline-none text-gray-700 placeholder-gray-400"
           />
+
           <svg
+            onClick={goToSearch}
             className="w-5 h-5 text-green-600 hover:text-green-700 cursor-pointer transition-colors"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -50,9 +72,14 @@ const Header = ({ cartItemCount, onCartClick }) => {
             strokeWidth="2"
             stroke="currentColor"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"
+            />
           </svg>
         </div>
+
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
@@ -71,25 +98,35 @@ const Header = ({ cartItemCount, onCartClick }) => {
         {/* Right Icons */}
         <div className="flex items-center space-x-4 relative">
           {/* Mobile Search */}
-          <div className="md:hidden flex items-center bg-gray-100 border border-green-200 rounded-full px-3 py-1 w-40 sm:w-52 mr-2">
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-grow bg-transparent px-2 py-1 outline-none text-gray-700 text-sm placeholder-gray-400"
-            />
-            <svg
-              className="w-5 h-5 text-green-600 hover:text-green-700 cursor-pointer transition-colors"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="2"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z" />
-            </svg>
-          </div>
+      <div className="md:hidden flex items-center bg-gray-100 border border-green-200 rounded-full px-3 py-1 w-40 sm:w-52 mr-2">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") goToSearch();
+          }}
+          className="flex-grow bg-transparent px-2 py-1 outline-none text-gray-700 text-sm placeholder-gray-400"
+        />
+
+        <svg
+          onClick={goToSearch}
+          className="w-5 h-5 text-green-600 hover:text-green-700 cursor-pointer transition-colors"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="2"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"
+          />
+        </svg>
+      </div>
+
 
           {/* Cart Button */}
           <Link
@@ -108,7 +145,7 @@ const Header = ({ cartItemCount, onCartClick }) => {
           {/* Profile Icon */}
           <div className="relative" ref={profileRef}>
             <button
-              onClick={() => isLogin?setIsProfileOpen(!isProfileOpen):navigate("/login")}
+              onClick={() => user?setIsProfileOpen(!isProfileOpen):navigate("/login")}
               className="focus:outline-none"
             >
               <svg
@@ -130,8 +167,8 @@ const Header = ({ cartItemCount, onCartClick }) => {
             {isProfileOpen && (
               <div className="absolute right-0 mt-3 w-52 bg-white border border-green-100 rounded-xl shadow-xl py-2 animate-fade-in">
                 <div className="px-4 py-3 text-sm text-gray-700 border-b">
-                  <p className="font-semibold">Welcome, User!</p>
-                  <p className="text-xs text-gray-500">user@example.com</p>
+                  <p className="font-semibold">Welcome, {user.username}!</p>
+                  <p className="text-xs text-gray-500">{user.email}</p>
                 </div>
                 <Link
                   to="/profile"
@@ -146,7 +183,12 @@ const Header = ({ cartItemCount, onCartClick }) => {
                   My Orders
                 </Link>
                 <button
-                  onClick={() => alert("Logged out!")}
+                  onClick={() => {
+                    Cookies.remove("greenmart_user", { path: "/" });
+                    alert("Logout successfully!");
+                    navigate("/login"); // redirect
+                    setIsProfileOpen(false);
+                  }}
                   className="w-full text-left px-4 py-2 text-gray-600 hover:bg-red-100 hover:text-red-600 text-sm rounded-md transition-all"
                 >
                   Logout

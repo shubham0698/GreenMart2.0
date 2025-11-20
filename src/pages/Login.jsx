@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -9,23 +10,50 @@ const Login = () => {
     password: "",
   });
 
+  const [error, setError] = useState("");
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    setError("");
 
-    // TODO: login API here
-    console.log("Login Data:", form);
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/login",
+        form,
+        { withCredentials: true } // 🔥 IMPORTANT: enables cookies
+      );
 
-    navigate("/"); // redirect to home
+      console.log("Login Success:", res.data);
+
+      alert("Login successful!");
+
+      navigate("/"); // redirect to home
+
+    } catch (err) {
+      console.log(err);
+
+      if (err.response && err.response.data) {
+        setError(err.response.data.message);
+      } else {
+        setError("Something went wrong!");
+      }
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="bg-white p-8 shadow-lg rounded-xl w-full max-w-md">
         <h2 className="text-3xl font-bold text-center mb-6">Login</h2>
+
+        {error && (
+          <p className="mb-4 text-red-600 text-center font-medium">
+            {error}
+          </p>
+        )}
 
         <form onSubmit={handleLogin}>
 
